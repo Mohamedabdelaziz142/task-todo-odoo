@@ -1,0 +1,32 @@
+version: '3.8'
+services:
+  todo-db:
+    image: postgres:15
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_PASSWORD=odoo
+      - POSTGRES_USER=odoo
+    ports:
+      - "5433:5432"
+    volumes:
+      - todo-db-data:/var/lib/postgresql/data   # ← persist your DB data
+    restart: unless-stopped                      # ← auto restart on crash
+
+  todo-odoo:
+    image: odoo:17
+    depends_on:
+      - todo-db
+    ports:
+      - "8070:8069"
+    volumes:
+      - ./extra-addons:/mnt/extra-addons
+      - todo-odoo-data:/var/lib/odoo             # ← persist odoo filestore/sessions
+    environment:
+      - HOST=todo-db
+      - USER=odoo
+      - PASSWORD=odoo
+    restart: unless-stopped                      # ← auto restart on crash
+
+volumes:
+  todo-db-data:       # ← named volume for postgres
+  todo-odoo-data:     # ← named volume for odoo
