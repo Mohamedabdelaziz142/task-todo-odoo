@@ -1,0 +1,9 @@
+.env
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store
+odoo-data/
+/var/
+/filestore/
+/sessions/
