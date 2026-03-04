@@ -1,0 +1,16 @@
+<odoo> 
+  <data>
+    <menuitem
+    id="todo_app_menu_root" 
+    name="To-Do App"
+    sequence="10"
+    web_icon="todo_app/static/description/icon.png"/>
+
+    <menuitem
+    id="tasks_menu"
+    name="Tasks"
+    parent="todo_app_menu_root"
+    sequence="10"
+    />
+  </data> 
+</odoo>

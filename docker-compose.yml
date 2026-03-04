@@ -9,8 +9,8 @@ services:
     ports:
       - "5433:5432"
     volumes:
-      - todo-db-data:/var/lib/postgresql/data   # ← persist your DB data
-    restart: unless-stopped                      # ← auto restart on crash
+      - todo-db-data:/var/lib/postgresql/data
+    restart: unless-stopped
 
   todo-odoo:
     image: odoo:17
@@ -20,13 +20,15 @@ services:
       - "8070:8069"
     volumes:
       - ./extra-addons:/mnt/extra-addons
-      - todo-odoo-data:/var/lib/odoo             # ← persist odoo filestore/sessions
+      - todo-odoo-data:/var/lib/odoo
     environment:
       - HOST=todo-db
       - USER=odoo
       - PASSWORD=odoo
-    restart: unless-stopped                      # ← auto restart on crash
+      # This line below is the most important one for your custom modules!
+      - ADDONS_PATH=/usr/lib/python3/dist-packages/odoo/addons,/mnt/extra-addons
+    restart: unless-stopped
 
 volumes:
-  todo-db-data:       # ← named volume for postgres
-  todo-odoo-data:     # ← named volume for odoo
+  todo-db-data:
+  todo-odoo-data:
