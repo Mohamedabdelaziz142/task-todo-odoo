@@ -33,9 +33,11 @@
                         </h1>
                      </div>
           <group>
-            <field name="description"/>
             <field name="assigned_to" widget="many2one"/>
             <field name="due_date"/>
+          </group>
+          <group>
+            <field name="description"/>
           </group>
         </sheet>
       </form>
@@ -70,7 +72,7 @@
 
   <menuitem
     id="tasks_menu_item"
-    name="Tasks"
+    name="All Tasks"
     parent="tasks_menu"
     action="task_action"
     sequence="10"
