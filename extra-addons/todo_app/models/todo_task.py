@@ -14,6 +14,7 @@ class TodoTask(models.Model):
     line_ids = fields.One2many('todo.lines', 'task_id', string='Task Lines')
     total_time = fields.Float(string='Total Time (hours)', compute='_compute_total_time')
     active = fields.Boolean(string='Active', default=True)
+    is_late = fields.Boolean(string='Is Late')
     state = fields.Selection([
         ('new', 'New'),
         ('in_progress', 'In Progress'),
@@ -52,6 +53,16 @@ class TodoTask(models.Model):
             if rec.total_time > rec.estimated_time:
                 raise ValidationError("Total time spent cannot exceed estimated time.")
             
+  
+    def check_due_dates(self):
+        today = fields.Date.today()
+        task_ids = self.search([])
+        for rec in task_ids:
+            if rec.due_date and rec.due_date < today and rec.state not in ('completed', 'close'):
+                rec.message_post(body="Task is overdue!", subtype_xmlid='mail.mt_warning')
+                rec.is_late = True
+            else:
+                rec.is_late = False
 
 class TodoLines(models.Model):
     _name = 'todo.lines'

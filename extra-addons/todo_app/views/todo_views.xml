@@ -5,13 +5,14 @@
     <field name="name">all tasks</field>
     <field name="model">todo.task</field>
     <field name="arch" type="xml">
-      <tree string="Tasks">
+      <tree string="Tasks" decoration-danger="is_late" decoration-success="state == 'completed'" decoration-info="state == 'in_progress'">
         <field name="name"/>
         <field name="assigned_to"/>
         <field name="due_date"/>
         <field name="estimated_time"/>
         <field name="total_time"/>
         <field name="state"/>
+        <field name="is_late" invisible="1"/>
       </tree>
     </field>
   </record>
@@ -41,7 +42,9 @@
             <field name="estimated_time"/>
             <field name="active" invisible="1"/>
           </group>
-            <field name="description"/>        
+            <group>
+              <field name="description"/>
+              </group>     
           <notebook>
             <page string="Timesheets">
               <field name="line_ids">
@@ -96,6 +99,16 @@
       action = records.action_close()
     </field>
   </record>
+   
+<record id="check_due_date_cron" model="ir.cron">
+    <field name="name">Check Due Dates</field>
+    <field name="model_id" ref="model_todo_task"/>
+    <field name="code">model.check_due_dates()</field>
+    <field name="interval_number">1</field>
+    <field name="interval_type">days</field>
+    <field name="numbercall">-1</field>
+    <field name="active" eval="True"/>
+</record>
 
   <menuitem
     id="tasks_menu_item"
