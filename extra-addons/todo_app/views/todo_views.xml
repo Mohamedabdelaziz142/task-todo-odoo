@@ -7,9 +7,10 @@
     <field name="arch" type="xml">
       <tree string="Tasks">
         <field name="name"/>
-        <field name="description"/> 
         <field name="assigned_to"/>
         <field name="due_date"/>
+        <field name="estimated_time"/>
+        <field name="total_time"/>
         <field name="state"/>
       </tree>
     </field>
@@ -20,10 +21,12 @@
     <field name="model">todo.task</field>
     <field name="arch" type="xml">
       <form string="Task">
-         <header>
+         <header> 
+                  <button name="action_new" string="Reset to New" type="object" class="btn-secondary" invisible="state != 'close'"/>         
                   <button name="action_in_progress" string="In Progress" type="object" class="btn-secondary" invisible="state != 'new'"/>
                   <button name="action_completed" string="Completed" type="object" class="btn-success" invisible="state != 'in_progress'"/>
-                  <field name="state" widget="statusbar" statusbar_visible="new,in_progress,completed"/>
+                  <button name="action_close" string="Close" type="object" class="btn-danger" invisible="state != 'completed'"/>
+                  <field name="state" widget="statusbar" statusbar_visible="new,in_progress,completed,close"/>
           </header>
         <sheet>
         <div class="oe_title">
@@ -35,10 +38,23 @@
           <group>
             <field name="assigned_to" widget="many2one"/>
             <field name="due_date"/>
+            <field name="estimated_time"/>
+            <field name="active" invisible="1"/>
           </group>
+            <field name="description"/>        
+          <notebook>
+            <page string="Timesheets">
+              <field name="line_ids">
+                <tree string="Timesheets" editable="bottom">
+                  <field name="description"/>
+                  <field name="time_spent"/>
+                </tree>
+              </field>
+            </page>
+          </notebook>
           <group>
-            <field name="description"/>
-          </group>
+            <field name="total_time" readonly="1"/>
+          </group>  
         </sheet>
       </form>
     </field>
@@ -60,6 +76,7 @@
         <filter name="due_date" string="Due Date" context="{'group_by': 'due_date'}"/>
         <filter name="state" string="State" context="{'group_by': 'state'}"/>
         <filter name="assigned_to" string="Assigned To" context="{'group_by': 'assigned_to'}"/>
+        <filter name="is_close" string="Status is Close" domain="[('state','=','close')]"/>
       </search>
     </field>
   </record>
@@ -68,6 +85,16 @@
       <field name="name">Tasks</field>
       <field name="res_model">todo.task</field>
       <field name="view_mode">tree,form</field>
+  </record>
+
+  <record id="action_close_tasks" model="ir.actions.server">
+    <field name="name">Close</field>
+    <field name="model_id" ref="model_todo_task"/>
+    <field name="binding_model_id" ref="model_todo_task"/>
+    <field name="state">code</field>
+    <field name="code">
+      action = records.action_close()
+    </field>
   </record>
 
   <menuitem

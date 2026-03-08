@@ -8,7 +8,8 @@
     'category': 'Tools',
     'license': 'LGPL-3',
     'depends': [
-              'base', 
+              'base',
+              'mail', 
                 ],
     'data': [
         'security/ir.model.access.csv',
