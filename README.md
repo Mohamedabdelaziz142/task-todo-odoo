@@ -137,4 +137,4 @@ docker compose down -v
 
 ## Author
 
-**Mohamed** — learning Odoo development 🚀
+**Mohamed** 🚀
