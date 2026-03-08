@@ -1,0 +1,94 @@
+<odoo>
+
+<record id="action_task_report" model="ir.actions.report">
+        <field name="name">Task Report</field>
+        <field name="model">todo.task</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">todo_app.task_report_template</field>
+        <field name="report_file">todo_app.task_report_template</field>
+        <field name="binding_model_id" ref="model_todo_task"/>
+        <field name="binding_type">report</field>
+    </record>
+
+<template id="task_report_template">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                    <div class="page">
+                        <style>
+                      .task-details {
+                          margin-bottom: 20px;
+                                }
+                      .task-details p {
+                          margin: 4px 0;
+                          display: grid;
+                          grid-template-columns: 150px 1fr;
+                                }
+                      .report_table th {
+                          text-align: center;
+                          }
+                      .total-row {
+                          background-color: #f0f0f0;
+                          font-weight: bold;                      
+                            }
+                        .report_table {
+                          width: 100%;
+                          border: 1px solid #b3adad;
+                          border-collapse: collapse;
+                          margin-top: 20px;
+                          margin-bottom: 20px;
+                        }
+                        .report_table td {
+                          border: 1px solid #b3adad;
+                          padding: 8px;
+                          text-align: left;
+                        }
+                        </style>
+                    <div class="task-details">
+                        <p><strong>Task:</strong> <span t-field="doc.name"/></p>
+                        <p><strong>Due Date:</strong> <span t-field="doc.due_date"/></p>
+                        <p><strong>Assign To:</strong> <span t-field="doc.assigned_to"/></p>
+                        <p><strong>Estimated Time:</strong> <span t-field="doc.estimated_time"/> H</p>                    </div>
+                    <div class="oe_title">
+                      <h3>Description:</h3>
+                      <p><span t-field="doc.description"/></p>
+                    </div>
+                        <table class="report_table">
+                            <thead>
+                                  <tr>
+                                      <th colspan="3" style="text-align:center;">Timesheet</th>
+                                  </tr>
+                                  <tr>
+                                      <th>#</th>
+                                      <th>Description</th>
+                                      <th>Time</th>
+                                  </tr>  
+                            </thead>
+                            <tbody>
+                              <t t-foreach="doc.line_ids" t-as="line">
+                                <tr>
+                                  <td><span t-esc="line_index + 1"/></td>
+                                  <td><span t-field="line.description"/></td>
+                                  <td><span t-field="line.time_spent"/> H</td>
+                                </tr>
+                              </t>
+                            <tr class="total-row">
+                              <td colspan="2" style="text-align:center;"><strong>Total Time</strong></td>
+                              <td style="text-align:center;"><span t-field="doc.total_time"/> H</td>
+                            </tr> 
+                            </tbody>
+                        </table>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+
+
+
+
+
+
+</odoo>

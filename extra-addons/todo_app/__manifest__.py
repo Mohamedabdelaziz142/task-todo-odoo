@@ -15,6 +15,7 @@
         'security/ir.model.access.csv',
         'views/base_menu.xml',
         'views/todo_views.xml',
+        'reports/task_reports.xml',
     ],
     'installable': True,
   'application': True,
