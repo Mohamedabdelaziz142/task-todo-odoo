@@ -1,3 +1,9 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_todo_task_user,todo.task,model_todo_task,base.group_user,1,1,1,1
-access_todo_lines_user,todo.lines,model_todo_lines,base.group_user,1,1,1,1
+access_todo_task_manager,todo.task.manager,model_todo_task,todo_app.group_todo_manager,1,1,1,1
+access_todo_task_user,todo.task.user,model_todo_task,todo_app.group_todo_user,1,1,0,0
+
+access_todo_lines_manager,todo.lines.manager,model_todo_lines,todo_app.group_todo_manager,1,1,1,1
+access_todo_lines_user,todo.lines.user,model_todo_lines,todo_app.group_todo_user,1,1,0,0
+
+access_todo_assign_task_manager,todo.assign.task.manager,model_todo_assign_task,todo_app.group_todo_manager,1,1,1,1
+access_todo_assign_task_user,todo.assign.task.user,model_todo_assign_task,todo_app.group_todo_user,1,1,1,1

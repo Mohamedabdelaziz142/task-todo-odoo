@@ -6,6 +6,7 @@
     <field name="model">todo.task</field>
     <field name="arch" type="xml">
       <tree string="Tasks" decoration-danger="is_late" decoration-success="state == 'completed'" decoration-info="state == 'in_progress'">
+        <field name="ref"/> 
         <field name="name"/>
         <field name="assigned_to"/>
         <field name="due_date"/>
@@ -33,17 +34,20 @@
         <div class="oe_title">
                   <label for="name" class="oe_edit_only"/>
                         <h1>
-                            <field name="name" placeholder="Task Name"/>
+                            <field name="name" placeholder="Task Name" readonly="state in ('completed', 'close')"/>
                         </h1>
+                        <h4>
+                          <field name="ref" readonly="1"/>    
+                        </h4>
                      </div>
           <group>
             <field name="assigned_to" widget="many2one"/>
-            <field name="due_date"/>
-            <field name="estimated_time"/>
+            <field name="due_date" readonly="state in ('completed', 'close')"/>
+            <field name="estimated_time" readonly="state in ('completed', 'close')"/>
             <field name="active" invisible="1"/>
           </group>
             <group>
-              <field name="description"/>
+              <field name="description" readonly="state in ('completed', 'close')"/>
               </group>     
           <notebook>
             <page string="Timesheets">
@@ -108,6 +112,16 @@
     <field name="interval_type">days</field>
     <field name="numbercall">-1</field>
     <field name="active" eval="True"/>
+</record>
+
+<record id="assign_server_action" model="ir.actions.server">
+    <field name="name">Assign</field>
+    <field name="model_id" ref="model_todo_task"/>
+    <field name="binding_model_id" ref="model_todo_task"/>
+    <field name="state">code</field>
+    <field name="code">
+        action = records.action_open_assign_wizard()
+    </field>
 </record>
 
   <menuitem

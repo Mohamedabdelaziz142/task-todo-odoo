@@ -15,6 +15,7 @@ class TodoTask(models.Model):
     total_time = fields.Float(string='Total Time (hours)', compute='_compute_total_time')
     active = fields.Boolean(string='Active', default=True)
     is_late = fields.Boolean(string='Is Late')
+    ref = fields.Char(string='Sequence', readonly=True, default='New')
     state = fields.Selection([
         ('new', 'New'),
         ('in_progress', 'In Progress'),
@@ -22,7 +23,12 @@ class TodoTask(models.Model):
         ('close', 'Close')
     ], string='Status', default='new')
 
-
+    @api.model
+    def create(self,vals):
+        if vals.get('ref', 'New') == 'New':
+          vals['ref'] = self.env['ir.sequence'].next_by_code('todo.task')
+        return super(TodoTask, self).create(vals)
+    
     def action_new(self):
         for rec in self:
             rec.state = 'new'
@@ -64,6 +70,20 @@ class TodoTask(models.Model):
             else:
                 rec.is_late = False
 
+    def action_open_assign_wizard(self):
+      return {
+        'type': 'ir.actions.act_window',
+        'name': 'Assign Tasks',
+        'res_model': 'todo.assign.task',
+        'view_mode': 'form',
+        'target': 'new',
+      }
+    def write(self, vals):
+        for rec in self:
+          if rec.state in ('close', 'completed') and 'state' not in vals:
+               raise ValidationError("Cannot update a completed or closed task!")
+        return super(TodoTask, self).write(vals)         
+      
 class TodoLines(models.Model):
     _name = 'todo.lines'
     _description = 'To Do Lines'

@@ -12,9 +12,12 @@
               'mail', 
                 ],
     'data': [
+        'security/groups.xml',
         'security/ir.model.access.csv',
+        'data/sequence.xml',
         'views/base_menu.xml',
         'views/todo_views.xml',
+        'wizard/assign_wizard.xml',
         'reports/task_reports.xml',
     ],
     'installable': True,
