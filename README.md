@@ -72,8 +72,7 @@ todo-odoo/
             └── description/
                 └── icon.png
 
----
-
+```
 ## Getting Started
 
 ### Prerequisites
