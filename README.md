@@ -39,6 +39,7 @@ A custom Odoo 17 module for managing tasks with timesheet tracking, automated al
 
 ## Project Structure
 
+```text
 todo-odoo/
 ├── docker-compose.yml
 ├── .env
@@ -49,19 +50,24 @@ todo-odoo/
         ├── __init__.py
         ├── __manifest__.py
         ├── controllers/       # REST API Logic
-        ├── wizard/            # Bulk Assign Wizard Logic & Views
-        ├── i18n/              # Arabic (ar.po) translation files
-        ├── models/
+        │   ├── __init__.py
+        │   └── main.py
+        ├── wizard/            # Bulk Assign Wizard
+        │   ├── __init__.py
+        │   ├── todo_assign_task.py
+        │   └── todo_assign_task_view.xml
+        ├── i18n/              # Arabic (ar.po) translations
+        ├── models/            # Core logic
         │   ├── __init__.py
         │   └── todo_task.py
-        ├── views/
+        ├── views/             # UI XML files
         │   ├── base_menu.xml
         │   └── todo_views.xml
-        ├── reports/
+        ├── reports/           # PDF Templates
         │   └── task_reports.xml
-        ├── security/
+        ├── security/          # Permissions
         │   ├── ir.model.access.csv
-        │   └── security.xml   # Groups and Record Rules
+        │   └── security.xml
         └── static/
             └── description/
                 └── icon.png
